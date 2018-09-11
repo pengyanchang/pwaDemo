@@ -1,7 +1,7 @@
 {
-  "name": "Progressive Web App: PhotoBooth",
-  "short_name": "无美颜自拍",
-  "description": "Simple Progressive Web App for taking selfies.",
+  "name": "无美颜无滤镜网页相机",
+  "short_name": "网页相机",
+  "description": "我的第一个PWA程序demo",
   "icons": [{
       "src": "assets/icons/icon_small.png",
       "type": "image/png",
@@ -13,7 +13,7 @@
     }],
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#fff",
-  "theme_color": "#fff",
+  "background_color": "#2196f3",
+  "theme_color": "red",
   "orientation": "portrait"
 }

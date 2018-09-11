@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    // References to all the element we will need.
+    // 获取所需要的dom元素
     var video = document.querySelector('#camera-stream'),
         image = document.querySelector('#snap'),
         start_camera = document.querySelector('#start-camera'),
@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', function () {
         error_message = document.querySelector('#error-message');
 
 
-    // The getUserMedia interface is used for handling camera input.
-    // Some browsers need a prefix so here we're covering all the options
+   
+    // 调用本地摄像头设备
     navigator.getMedia = ( 
         navigator.getUserMedia ||
         navigator.webkitGetUserMedia ||
@@ -21,69 +21,56 @@ document.addEventListener('DOMContentLoaded', function () {
     );
 
 
+	//判断浏览器是否支持
     if(!navigator.getMedia){
-        displayErrorMessage("Your browser doesn't have support for the navigator.getUserMedia interface.");
+        displayErrorMessage("你的浏览器不支持navigator.getUserMedia！！！");
     }
     else{
-        // Request the camera.
+        // 请求打开摄像头
         navigator.getMedia(
             {
                 video: true
             },
-            // Success Callback
+            // 成功
             function(stream) {
-
-                // Create an object URL for the video stream and
-                // set it as src of our HTLM video element.
                 video.src = window.URL.createObjectURL(stream);
-
-                // Play the video element to start the stream.
                 video.play();
                 video.onplay = function() {
                     showVideo();
                 };
-         
             },
-            // Error Callback
+            // 失败
             function(err) {
-                displayErrorMessage("There was an error with accessing the camera stream: " + err.name, err);
+                displayErrorMessage("调用失败: " + err.name, err);
             }
         );
     }
-
-
-
-    // Mobile browsers cannot play video without user input,
-    // so here we're using a button to start it manually.
+	
+	//点击打开app
     start_camera.addEventListener("click", function(e) {
 
         e.preventDefault();
-
-        // Start video playback manually.
         video.play();
         showVideo();
 
     });
 
-
+    //点击照相，重拍，图片另存为
     take_photo_btn.addEventListener("click", function(e) {
 
         e.preventDefault();
 
         var snap = takeSnapshot();
 
-        // Show image. 
         image.setAttribute('src', snap);
         image.classList.add("visible");
 
-        // Enable delete and save buttons
         delete_photo_btn.classList.remove("disabled");
         download_photo_btn.classList.remove("disabled");
 
-        // Set the href attribute of the download button to the snap url.
+
         download_photo_btn.href = snap;
 
-        // Pause video playback of stream.
         video.pause();
 
     });
